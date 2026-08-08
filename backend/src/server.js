@@ -22,7 +22,8 @@ app.get('/api/health', (req, res) => {
 // Your other API routes here...
 
 // Catch-all: Serve React frontend for any non-API routes
-app.get('*', (req, res) => {
+// FIXED: Use (.*) instead of * for Express 5 compatibility
+app.get('(.*)', (req, res) => {
   res.sendFile(path.join(__dirname, 'frontend/dist/index.html'));
 });
 
