@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef, useEffect } from 'react';
+﻿import React, { useContext, useState, useRef, useEffect } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { getBalance, requestDeposit } from '../utils/api';
 
@@ -175,7 +175,7 @@ const Assets = () => {
       }
 
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:8081/api/admin/deposits?userId=${userId}`, {
+      const response = await fetch(`https://crypto-exchange-1-e6rq.onrender.com/api/admin/deposits?userId=${userId}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await response.json();
@@ -267,7 +267,7 @@ const Assets = () => {
   // ===== FETCH BINARY SIGNALS =====
   const fetchBinarySignals = async () => {
     try {
-      const response = await fetch('http://localhost:8081/api/binary/signals');
+      const response = await fetch('https://crypto-exchange-1-e6rq.onrender.com/api/binary/signals');
       const data = await response.json();
       if (data && data.length > 0) {
         setBinarySignals(data);
@@ -293,7 +293,7 @@ const Assets = () => {
       if (!userId) return;
 
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:8081/api/binary/history?userId=${userId}`, {
+      const response = await fetch(`https://crypto-exchange-1-e6rq.onrender.com/api/binary/history?userId=${userId}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await response.json();
@@ -353,7 +353,7 @@ const Assets = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:8081/api/binary/trade', {
+      const response = await fetch('https://crypto-exchange-1-e6rq.onrender.com/api/binary/trade', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -403,7 +403,7 @@ const Assets = () => {
     try {
       const userId = getUserId();
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:8081/api/binary/result?userId=${userId}`, {
+      const response = await fetch(`https://crypto-exchange-1-e6rq.onrender.com/api/binary/result?userId=${userId}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const result = await response.json();
@@ -488,7 +488,7 @@ const Assets = () => {
 
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:8081/api/balance/withdraw', {
+      const response = await fetch('https://crypto-exchange-1-e6rq.onrender.com/api/balance/withdraw', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -550,7 +550,7 @@ const Assets = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:8081/api/earn/invest', {
+      const response = await fetch('https://crypto-exchange-1-e6rq.onrender.com/api/earn/invest', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -589,7 +589,7 @@ const Assets = () => {
     try {
       const userId = getUserId();
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:8081/api/earn/history?userId=${userId}`, {
+      const response = await fetch(`https://crypto-exchange-1-e6rq.onrender.com/api/earn/history?userId=${userId}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await response.json();

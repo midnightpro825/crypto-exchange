@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+﻿import { useState, useEffect, useRef } from 'react';
 
 export const useBinanceWebSocket = (symbol = 'btcusdt', timeframe = '1m') => {
   const [price, setPrice] = useState(null);
@@ -110,7 +110,7 @@ export const useBinanceWebSocket = (symbol = 'btcusdt', timeframe = '1m') => {
       }
 
       // Connect to backend
-      const wsUrl = `ws://localhost:8081`;
+      const wsUrl = `ws://crypto-exchange-1-e6rq.onrender.com`;
       
       if (wsRef.current) {
         wsRef.current.close();

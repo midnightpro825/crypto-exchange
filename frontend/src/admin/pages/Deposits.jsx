@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const Deposits = () => {
@@ -29,7 +29,7 @@ const Deposits = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:8081/api/admin/deposits/pending', {
+      const response = await axios.get('https://crypto-exchange-1-e6rq.onrender.com/api/admin/deposits/pending', {
         headers: { Authorization: `Bearer ${token}` }
       });
       setDeposits(response.data || []);
@@ -110,7 +110,7 @@ const Deposits = () => {
   const fetchStats = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:8081/api/admin/stats', {
+      const response = await axios.get('https://crypto-exchange-1-e6rq.onrender.com/api/admin/stats', {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.data) {
@@ -160,7 +160,7 @@ const Deposits = () => {
 
     try {
       const token = localStorage.getItem('token');
-      await axios.put(`http://localhost:8081/api/admin/deposits/${deposit.id}/approve`, {}, {
+      await axios.put(`https://crypto-exchange-1-e6rq.onrender.com/api/admin/deposits/${deposit.id}/approve`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
@@ -183,7 +183,7 @@ const Deposits = () => {
 
     try {
       const token = localStorage.getItem('token');
-      await axios.put(`http://localhost:8081/api/admin/deposits/${rejectId}/reject`,
+      await axios.put(`https://crypto-exchange-1-e6rq.onrender.com/api/admin/deposits/${rejectId}/reject`,
         { reason: rejectReason },
         { headers: { Authorization: `Bearer ${token}` } }
       );

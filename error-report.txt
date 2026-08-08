@@ -1,0 +1,57 @@
+﻿=========================================
+   PROJECT ERROR REPORT
+   Generated: 08/09/2026 08:33:16
+=========================================
+
+ERRORS (0):
+
+
+WARNINGS (43):
+localhost reference in response.js:626
+localhost reference in types.js:149
+localhost reference in types.js:440
+localhost reference in types.js:441
+localhost reference in index.js:42
+localhost reference in admin-login.html:218
+localhost reference in index.d.ts:38
+localhost reference in shouldBypassProxy.js:48
+localhost reference in node.js:675
+localhost reference in node.js:2633
+localhost reference in node.js:2636
+localhost reference in index.d.ts:2562
+localhost reference in admin-login.html:218
+localhost reference in server.js:18
+localhost reference in response.js:626
+localhost reference in types.js:149
+localhost reference in types.js:440
+localhost reference in types.js:441
+localhost reference in index.js:42
+localhost reference in index.d.ts:38
+localhost reference in shouldBypassProxy.js:48
+localhost reference in node.js:675
+localhost reference in node.js:2633
+localhost reference in node.js:2636
+localhost reference in index.d.ts:2562
+localhost reference in admin-login.html:218
+localhost reference in server.js:18
+localhost reference in shouldBypassProxy.js:48
+localhost reference in response.js:626
+localhost reference in types.js:149
+localhost reference in types.js:440
+localhost reference in types.js:441
+localhost reference in index.js:42
+localhost reference in autoTrader.js:4
+localhost reference in shouldBypassProxy.js:48
+localhost reference in response.js:626
+localhost reference in types.js:149
+localhost reference in types.js:440
+localhost reference in types.js:441
+localhost reference in index.js:42
+localhost reference in autoTrader.js:4
+DATABASE_URL not set in .env
+Hardcoded passwords found
+
+LOCALHOST REFERENCES:
+response.js:626 - *    res.append('Link', ['<http://localhost/>', '<http://localhost:3000/>']); types.js:149 - ['127.0.0.1', '127.0.0.1'], types.js:440 - ['{127.0.0.1,fd00:1::40e,1.2.3.4}', function (t, value) { types.js:441 - t.deepEqual(value, ['127.0.0.1', 'fd00:1::40e', '1.2.3.4']); index.js:42 - loopback: ['127.0.0.1/8', '::1/128'], admin-login.html:218 - const response = await fetch('http://localhost:8080/api/auth/login', { index.d.ts:38 - * reactRefreshHost: 'http://localhost:3000' shouldBypassProxy.js:48 - // Node's URL parser normalises ::ffff:127.0.0.1 → ::ffff:7f00:1 node.js:675 - "127.0.0.1", node.js:2633 - let host = detail.address.replace("127.0.0.1", hostname.name); node.js:2636 - if (detail.address.includes("127.0.0.1")) local.push(url); index.d.ts:2562 - * @example `http://127.0.0.1:8080` admin-login.html:218 - const response = await fetch('http://localhost:8080/api/auth/login', { server.js:18 - console.log('🔌 WebSocket server running on ws://localhost:8080'); response.js:626 - *    res.append('Link', ['<http://localhost/>', '<http://localhost:3000/>']); types.js:149 - ['127.0.0.1', '127.0.0.1'], types.js:440 - ['{127.0.0.1,fd00:1::40e,1.2.3.4}', function (t, value) { types.js:441 - t.deepEqual(value, ['127.0.0.1', 'fd00:1::40e', '1.2.3.4']); index.js:42 - loopback: ['127.0.0.1/8', '::1/128'], index.d.ts:38 - * reactRefreshHost: 'http://localhost:3000' shouldBypassProxy.js:48 - // Node's URL parser normalises ::ffff:127.0.0.1 → ::ffff:7f00:1 node.js:675 - "127.0.0.1", node.js:2633 - let host = detail.address.replace("127.0.0.1", hostname.name); node.js:2636 - if (detail.address.includes("127.0.0.1")) local.push(url); index.d.ts:2562 - * @example `http://127.0.0.1:8080` admin-login.html:218 - const response = await fetch('http://localhost:8080/api/auth/login', { server.js:18 - console.log('🔌 WebSocket server running on ws://localhost:8080'); shouldBypassProxy.js:48 - // Node's URL parser normalises ::ffff:127.0.0.1 → ::ffff:7f00:1 response.js:626 - *    res.append('Link', ['<http://localhost/>', '<http://localhost:3000/>']); types.js:149 - ['127.0.0.1', '127.0.0.1'], types.js:440 - ['{127.0.0.1,fd00:1::40e,1.2.3.4}', function (t, value) { types.js:441 - t.deepEqual(value, ['127.0.0.1', 'fd00:1::40e', '1.2.3.4']); index.js:42 - loopback: ['127.0.0.1/8', '::1/128'], autoTrader.js:4 - const ws = new WebSocket('ws://localhost:8080'); shouldBypassProxy.js:48 - // Node's URL parser normalises ::ffff:127.0.0.1 → ::ffff:7f00:1 response.js:626 - *    res.append('Link', ['<http://localhost/>', '<http://localhost:3000/>']); types.js:149 - ['127.0.0.1', '127.0.0.1'], types.js:440 - ['{127.0.0.1,fd00:1::40e,1.2.3.4}', function (t, value) { types.js:441 - t.deepEqual(value, ['127.0.0.1', 'fd00:1::40e', '1.2.3.4']); index.js:42 - loopback: ['127.0.0.1/8', '::1/128'], autoTrader.js:4 - const ws = new WebSocket('ws://localhost:8080');
+
+=========================================

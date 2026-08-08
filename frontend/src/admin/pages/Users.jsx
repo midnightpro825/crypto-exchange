@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const Users = () => {
@@ -29,7 +29,7 @@ const Users = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:8081/api/admin/users', {
+      const response = await axios.get('https://crypto-exchange-1-e6rq.onrender.com/api/admin/users', {
         headers: { Authorization: `Bearer ${token}` }
       });
       setUsers(response.data || []);
@@ -50,7 +50,7 @@ const Users = () => {
   const fetchStats = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:8081/api/admin/stats', {
+      const response = await axios.get('https://crypto-exchange-1-e6rq.onrender.com/api/admin/stats', {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.data) {
@@ -97,7 +97,7 @@ const Users = () => {
         if (confirm(`⚠️ Suspend user ${user.username}? They won't be able to login or trade.`)) {
           try {
             const token = localStorage.getItem('token');
-            await axios.put(`http://localhost:8081/api/admin/users/${user.id}/status`,
+            await axios.put(`https://crypto-exchange-1-e6rq.onrender.com/api/admin/users/${user.id}/status`,
               { is_active: false },
               { headers: { Authorization: `Bearer ${token}` } }
             );
@@ -112,7 +112,7 @@ const Users = () => {
       case 'activate':
         try {
           const token = localStorage.getItem('token');
-          await axios.put(`http://localhost:8081/api/admin/users/${user.id}/status`,
+          await axios.put(`https://crypto-exchange-1-e6rq.onrender.com/api/admin/users/${user.id}/status`,
             { is_active: true },
             { headers: { Authorization: `Bearer ${token}` } }
           );
@@ -127,7 +127,7 @@ const Users = () => {
         if (confirm(`⚠️ PERMANENTLY DELETE ${user.username}? This cannot be undone!`)) {
           try {
             const token = localStorage.getItem('token');
-            await axios.delete(`http://localhost:8081/api/admin/users/${user.id}`, {
+            await axios.delete(`https://crypto-exchange-1-e6rq.onrender.com/api/admin/users/${user.id}`, {
               headers: { Authorization: `Bearer ${token}` }
             });
             alert(`🗑️ ${user.username} deleted`);
@@ -153,7 +153,7 @@ const Users = () => {
   const saveEdit = async () => {
     try {
       const token = localStorage.getItem('token');
-      await axios.put(`http://localhost:8081/api/admin/users/${selectedUser.id}`,
+      await axios.put(`https://crypto-exchange-1-e6rq.onrender.com/api/admin/users/${selectedUser.id}`,
         editData,
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -169,7 +169,7 @@ const Users = () => {
   const adjustBalance = async () => {
     try {
       const token = localStorage.getItem('token');
-      await axios.post(`http://localhost:8081/api/admin/users/${selectedUser.id}/balance`,
+      await axios.post(`https://crypto-exchange-1-e6rq.onrender.com/api/admin/users/${selectedUser.id}/balance`,
         balanceData,
         { headers: { Authorization: `Bearer ${token}` } }
       );

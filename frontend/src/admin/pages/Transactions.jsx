@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const Transactions = () => {
@@ -32,7 +32,7 @@ const Transactions = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:8081/api/admin/transactions', {
+      const response = await axios.get('https://crypto-exchange-1-e6rq.onrender.com/api/admin/transactions', {
         headers: { Authorization: `Bearer ${token}` }
       });
       setTransactions(response.data || []);
@@ -147,7 +147,7 @@ const Transactions = () => {
   const fetchStats = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:8081/api/admin/stats', {
+      const response = await axios.get('https://crypto-exchange-1-e6rq.onrender.com/api/admin/stats', {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.data) {

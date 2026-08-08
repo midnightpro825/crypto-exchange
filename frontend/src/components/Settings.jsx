@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+﻿import React, { useState, useContext, useEffect } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import axios from 'axios';
 
@@ -58,7 +58,7 @@ const Settings = () => {
   const loadSettings = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:8081/api/settings', {
+      const response = await axios.get('https://crypto-exchange-1-e6rq.onrender.com/api/settings', {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.data && Object.keys(response.data).length > 0) {
@@ -86,7 +86,7 @@ const Settings = () => {
     
     try {
       const token = localStorage.getItem('token');
-      await axios.put('http://localhost:8081/api/settings', settings, {
+      await axios.put('https://crypto-exchange-1-e6rq.onrender.com/api/settings', settings, {
         headers: { Authorization: `Bearer ${token}` }
       });
       localStorage.setItem('tradeflow-settings', JSON.stringify(settings));

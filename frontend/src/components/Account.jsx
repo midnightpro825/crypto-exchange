@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+﻿import React, { useState, useContext, useEffect } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import axios from 'axios';
 
@@ -163,7 +163,7 @@ const Account = () => {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post('http://localhost:8081/api/kyc/upload', formData, {
+      const response = await axios.post('https://crypto-exchange-1-e6rq.onrender.com/api/kyc/upload', formData, {
         headers: { 
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'multipart/form-data'
@@ -220,7 +220,7 @@ const Account = () => {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post('http://localhost:8081/api/kyc/upgrade', 
+      const response = await axios.post('https://crypto-exchange-1-e6rq.onrender.com/api/kyc/upgrade', 
         { level },
         { headers: { 'Authorization': `Bearer ${token}` } }
       );
@@ -250,7 +250,7 @@ const Account = () => {
   const fetchKYCStatus = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:8081/api/user/kyc/status', {
+      const response = await axios.get('https://crypto-exchange-1-e6rq.onrender.com/api/user/kyc/status', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (response.data) {
@@ -268,7 +268,7 @@ const Account = () => {
   const fetchProfile = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:8081/api/user/profile', {
+      const response = await axios.get('https://crypto-exchange-1-e6rq.onrender.com/api/user/profile', {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.data) {
@@ -292,7 +292,7 @@ const Account = () => {
   const fetchReferralData = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:8081/api/referral', {
+      const response = await axios.get('https://crypto-exchange-1-e6rq.onrender.com/api/referral', {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.data) {
@@ -315,7 +315,7 @@ const Account = () => {
   const fetchActivityLog = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:8081/api/activity', {
+      const response = await axios.get('https://crypto-exchange-1-e6rq.onrender.com/api/activity', {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.data && response.data.length > 0) {
@@ -343,7 +343,7 @@ const Account = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      await axios.put('http://localhost:8081/api/user/profile', 
+      await axios.put('https://crypto-exchange-1-e6rq.onrender.com/api/user/profile', 
         profileData,
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -378,7 +378,7 @@ const Account = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      await axios.put('http://localhost:8081/api/user/password',
+      await axios.put('https://crypto-exchange-1-e6rq.onrender.com/api/user/password',
         { 
           current_password: securityData.currentPassword,
           new_password: securityData.newPassword
@@ -407,7 +407,7 @@ const Account = () => {
     try {
       const token = localStorage.getItem('token');
       const endpoint = securityData.twoFAEnabled ? 'disable' : 'enable';
-      await axios.post(`http://localhost:8081/api/user/2fa/${endpoint}`, {},
+      await axios.post(`https://crypto-exchange-1-e6rq.onrender.com/api/user/2fa/${endpoint}`, {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setSecurityData({ ...securityData, twoFAEnabled: !securityData.twoFAEnabled });

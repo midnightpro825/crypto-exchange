@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const AdminSettings = () => {
@@ -63,7 +63,7 @@ const AdminSettings = () => {
   const loadSettings = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:8081/api/admin/settings', {
+      const response = await axios.get('https://crypto-exchange-1-e6rq.onrender.com/api/admin/settings', {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.data) {
@@ -87,7 +87,7 @@ const AdminSettings = () => {
     setSaveSuccess(false);
     try {
       const token = localStorage.getItem('token');
-      await axios.put('http://localhost:8081/api/admin/settings', settings, {
+      await axios.put('https://crypto-exchange-1-e6rq.onrender.com/api/admin/settings', settings, {
         headers: { Authorization: `Bearer ${token}` }
       });
       localStorage.setItem('adminSettings', JSON.stringify(settings));

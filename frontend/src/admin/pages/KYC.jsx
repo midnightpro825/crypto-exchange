@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const KYC = () => {
@@ -27,7 +27,7 @@ const KYC = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:8081/api/admin/kyc/pending', {
+      const response = await axios.get('https://crypto-exchange-1-e6rq.onrender.com/api/admin/kyc/pending', {
         headers: { Authorization: `Bearer ${token}` }
       });
       setKycRequests(response.data || []);
@@ -119,7 +119,7 @@ const KYC = () => {
   const fetchStats = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:8081/api/admin/stats', {
+      const response = await axios.get('https://crypto-exchange-1-e6rq.onrender.com/api/admin/stats', {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.data) {
@@ -149,7 +149,7 @@ const KYC = () => {
         if (confirm(`✅ Approve KYC for ${request.username}?`)) {
           try {
             const token = localStorage.getItem('token');
-            await axios.put(`http://localhost:8081/api/admin/kyc/${request.id}/approve`, {}, {
+            await axios.put(`https://crypto-exchange-1-e6rq.onrender.com/api/admin/kyc/${request.id}/approve`, {}, {
               headers: { Authorization: `Bearer ${token}` }
             });
             alert(`✅ KYC approved for ${request.username}`);
@@ -185,7 +185,7 @@ const KYC = () => {
 
     try {
       const token = localStorage.getItem('token');
-      await axios.put(`http://localhost:8081/api/admin/kyc/${rejectId}/reject`,
+      await axios.put(`https://crypto-exchange-1-e6rq.onrender.com/api/admin/kyc/${rejectId}/reject`,
         { reason: rejectReason },
         { headers: { Authorization: `Bearer ${token}` } }
       );

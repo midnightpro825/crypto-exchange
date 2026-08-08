@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const Markets = () => {
@@ -38,7 +38,7 @@ const Markets = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:8081/api/admin/markets', {
+      const response = await axios.get('https://crypto-exchange-1-e6rq.onrender.com/api/admin/markets', {
         headers: { Authorization: `Bearer ${token}` }
       });
       setMarkets(response.data || []);
@@ -169,7 +169,7 @@ const Markets = () => {
   const fetchStats = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:8081/api/admin/stats', {
+      const response = await axios.get('https://crypto-exchange-1-e6rq.onrender.com/api/admin/stats', {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.data) {
@@ -234,7 +234,7 @@ const Markets = () => {
         if (confirm(`⚠️ Permanently delete market ${market.pair}?`)) {
           try {
             const token = localStorage.getItem('token');
-            await axios.delete(`http://localhost:8081/api/admin/markets/${market.id}`, {
+            await axios.delete(`https://crypto-exchange-1-e6rq.onrender.com/api/admin/markets/${market.id}`, {
               headers: { Authorization: `Bearer ${token}` }
             });
             alert(`🗑️ Market ${market.pair} deleted`);
@@ -255,7 +255,7 @@ const Markets = () => {
   const confirmStatusChange = async () => {
     try {
       const token = localStorage.getItem('token');
-      await axios.put(`http://localhost:8081/api/admin/markets/${confirmId}/status`,
+      await axios.put(`https://crypto-exchange-1-e6rq.onrender.com/api/admin/markets/${confirmId}/status`,
         { status: confirmAction === 'pause' ? 'paused' : confirmAction === 'activate' ? 'active' : 'maintenance' },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -275,12 +275,12 @@ const Markets = () => {
     try {
       const token = localStorage.getItem('token');
       if (showAddModal) {
-        await axios.post('http://localhost:8081/api/admin/markets', formData, {
+        await axios.post('https://crypto-exchange-1-e6rq.onrender.com/api/admin/markets', formData, {
           headers: { Authorization: `Bearer ${token}` }
         });
         alert('✅ Market added successfully!');
       } else {
-        await axios.put(`http://localhost:8081/api/admin/markets/${selectedMarket.id}`, formData, {
+        await axios.put(`https://crypto-exchange-1-e6rq.onrender.com/api/admin/markets/${selectedMarket.id}`, formData, {
           headers: { Authorization: `Bearer ${token}` }
         });
         alert('✅ Market updated successfully!');

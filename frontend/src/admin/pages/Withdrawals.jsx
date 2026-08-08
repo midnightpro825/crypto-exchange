@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const Withdrawals = () => {
@@ -30,7 +30,7 @@ const Withdrawals = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:8081/api/admin/withdrawals/pending', {
+      const response = await axios.get('https://crypto-exchange-1-e6rq.onrender.com/api/admin/withdrawals/pending', {
         headers: { Authorization: `Bearer ${token}` }
       });
       setWithdrawals(response.data || []);
@@ -107,7 +107,7 @@ const Withdrawals = () => {
   const fetchStats = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:8081/api/admin/stats', {
+      const response = await axios.get('https://crypto-exchange-1-e6rq.onrender.com/api/admin/stats', {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.data) {
@@ -158,7 +158,7 @@ const Withdrawals = () => {
 
     try {
       const token = localStorage.getItem('token');
-      await axios.put(`http://localhost:8081/api/admin/withdrawals/${withdrawal.id}/approve`,
+      await axios.put(`https://crypto-exchange-1-e6rq.onrender.com/api/admin/withdrawals/${withdrawal.id}/approve`,
         { tx_hash: txHash || null },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -183,7 +183,7 @@ const Withdrawals = () => {
 
     try {
       const token = localStorage.getItem('token');
-      await axios.put(`http://localhost:8081/api/admin/withdrawals/${rejectId}/reject`,
+      await axios.put(`https://crypto-exchange-1-e6rq.onrender.com/api/admin/withdrawals/${rejectId}/reject`,
         { reason: rejectReason },
         { headers: { Authorization: `Bearer ${token}` } }
       );

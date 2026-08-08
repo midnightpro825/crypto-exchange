@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const Orders = () => {
@@ -27,7 +27,7 @@ const Orders = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:8081/api/admin/orders', {
+      const response = await axios.get('https://crypto-exchange-1-e6rq.onrender.com/api/admin/orders', {
         headers: { Authorization: `Bearer ${token}` }
       });
       setOrders(response.data || []);
@@ -139,7 +139,7 @@ const Orders = () => {
   const fetchStats = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:8081/api/admin/stats', {
+      const response = await axios.get('https://crypto-exchange-1-e6rq.onrender.com/api/admin/stats', {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.data) {
@@ -180,7 +180,7 @@ const Orders = () => {
   const cancelOrder = async () => {
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:8081/api/admin/orders/${cancelId}`, {
+      await axios.delete(`https://crypto-exchange-1-e6rq.onrender.com/api/admin/orders/${cancelId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
