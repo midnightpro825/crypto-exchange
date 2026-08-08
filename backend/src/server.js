@@ -36,8 +36,12 @@ pool.connect((err) => {
 app.use(cors());
 app.use(express.json());
 
+// FIXED: Correct path to frontend dist - go up one level from backend/src
+const frontendPath = path.join(__dirname, '../../frontend/dist');
+console.log('📁 Frontend path:', frontendPath);
+
 // Serve static files from the frontend dist directory
-app.use(express.static(path.join(__dirname, 'frontend/dist')));
+app.use(express.static(frontendPath));
 
 // ============================================================
 // HEALTH CHECK
@@ -281,11 +285,10 @@ app.get('/api/admin/stats', async (req, res) => {
 });
 
 // ============================================================
-// CATCH-ALL: Serve React frontend (FIXED - using app.use)
+// CATCH-ALL: Serve React frontend
 // ============================================================
-// This must be the LAST route
 app.use((req, res) => {
-    res.sendFile(path.join(__dirname, 'frontend/dist/index.html'));
+    res.sendFile(path.join(frontendPath, 'index.html'));
 });
 
 // ============================================================
@@ -294,4 +297,5 @@ app.use((req, res) => {
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`🚀 Server running on port ${PORT}`);
+    console.log(`📁 Serving frontend from: ${frontendPath}`);
 });
