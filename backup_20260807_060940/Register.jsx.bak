@@ -1,0 +1,300 @@
+import React, { useState } from 'react';
+
+const Register = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setSuccess(false);
+    setLoading(true);
+
+    // Simple validation
+    if (!formData.name || !formData.email || !formData.password) {
+      setError('Please fill in all fields');
+      setLoading(false);
+      return;
+    }
+
+    if (formData.password !== formData.confirmPassword) {
+      setError('Passwords do not match');
+      setLoading(false);
+      return;
+    }
+
+    try {
+      console.log('📝 Registering user:', formData.name);
+      
+      // Direct API call
+      const response = await fetch('http://localhost:8081/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          password: formData.password,
+          username: formData.name.toLowerCase().replace(/\s/g, '')
+        })
+      });
+
+      const data = await response.json();
+      console.log('📡 Server response:', data);
+
+      if (data.success) {
+        // ✅ Save to localStorage
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        
+        console.log('✅ User saved!');
+        console.log('👤 Name:', data.user.name);
+        console.log('🆔 ID:', data.user.id);
+        
+        setSuccess(true);
+        
+        // ✅ Force redirect to dashboard
+        setTimeout(() => {
+          window.location.href = '/dashboard';
+        }, 1000);
+      } else {
+        setError(data.message || 'Registration failed');
+      }
+    } catch (err) {
+      console.error('❌ Error:', err);
+      setError('Cannot connect to server. Make sure backend is running.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Simple check user function
+  const checkUser = () => {
+    const user = localStorage.getItem('user');
+    if (user) {
+      try {
+        const parsed = JSON.parse(user);
+        alert(`✅ Logged in as: ${parsed.name}\nID: ${parsed.id}\nEmail: ${parsed.email}`);
+      } catch (e) {
+        alert(`User data: ${user}`);
+      }
+    } else {
+      alert('❌ No user found in localStorage');
+    }
+  };
+
+  return (
+    <div style={{
+      maxWidth: '400px',
+      margin: '50px auto',
+      padding: '30px',
+      background: '#0a0b0e',
+      borderRadius: '12px',
+      border: '1px solid rgba(255,255,255,0.06)'
+    }}>
+      <h2 style={{ textAlign: 'center', color: '#eaecef', marginBottom: '24px' }}>
+        🚀 Create Account
+      </h2>
+
+      {error && (
+        <div style={{
+          padding: '12px',
+          background: 'rgba(246,70,93,0.1)',
+          border: '1px solid rgba(246,70,93,0.2)',
+          borderRadius: '8px',
+          color: '#f6465d',
+          marginBottom: '16px'
+        }}>
+          {error}
+        </div>
+      )}
+
+      {success && (
+        <div style={{
+          padding: '12px',
+          background: 'rgba(14,203,129,0.1)',
+          border: '1px solid rgba(14,203,129,0.2)',
+          borderRadius: '8px',
+          color: '#0ecb81',
+          marginBottom: '16px',
+          textAlign: 'center'
+        }}>
+          ✅ Registration successful! Redirecting...
+        </div>
+      )}
+
+      <form onSubmit={handleSubmit}>
+        <div style={{ marginBottom: '16px' }}>
+          <label style={{ color: '#848e9c', display: 'block', marginBottom: '6px', fontSize: '14px' }}>
+            Full Name
+          </label>
+          <input
+            type="text"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            placeholder="John Doe"
+            style={{
+              width: '100%',
+              padding: '12px',
+              background: 'rgba(255,255,255,0.04)',
+              border: '1px solid rgba(255,255,255,0.08)',
+              borderRadius: '8px',
+              color: '#eaecef',
+              fontSize: '14px',
+              outline: 'none',
+              boxSizing: 'border-box'
+            }}
+            required
+          />
+        </div>
+
+        <div style={{ marginBottom: '16px' }}>
+          <label style={{ color: '#848e9c', display: 'block', marginBottom: '6px', fontSize: '14px' }}>
+            Email Address
+          </label>
+          <input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            placeholder="john@example.com"
+            style={{
+              width: '100%',
+              padding: '12px',
+              background: 'rgba(255,255,255,0.04)',
+              border: '1px solid rgba(255,255,255,0.08)',
+              borderRadius: '8px',
+              color: '#eaecef',
+              fontSize: '14px',
+              outline: 'none',
+              boxSizing: 'border-box'
+            }}
+            required
+          />
+        </div>
+
+        <div style={{ marginBottom: '16px' }}>
+          <label style={{ color: '#848e9c', display: 'block', marginBottom: '6px', fontSize: '14px' }}>
+            Password
+          </label>
+          <input
+            type="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            placeholder="Min 6 characters"
+            style={{
+              width: '100%',
+              padding: '12px',
+              background: 'rgba(255,255,255,0.04)',
+              border: '1px solid rgba(255,255,255,0.08)',
+              borderRadius: '8px',
+              color: '#eaecef',
+              fontSize: '14px',
+              outline: 'none',
+              boxSizing: 'border-box'
+            }}
+            required
+            minLength="6"
+          />
+        </div>
+
+        <div style={{ marginBottom: '24px' }}>
+          <label style={{ color: '#848e9c', display: 'block', marginBottom: '6px', fontSize: '14px' }}>
+            Confirm Password
+          </label>
+          <input
+            type="password"
+            name="confirmPassword"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+            placeholder="Confirm password"
+            style={{
+              width: '100%',
+              padding: '12px',
+              background: 'rgba(255,255,255,0.04)',
+              border: '1px solid rgba(255,255,255,0.08)',
+              borderRadius: '8px',
+              color: '#eaecef',
+              fontSize: '14px',
+              outline: 'none',
+              boxSizing: 'border-box'
+            }}
+            required
+          />
+        </div>
+
+        <button
+          type="submit"
+          disabled={loading}
+          style={{
+            width: '100%',
+            padding: '14px',
+            background: loading ? '#2a2e39' : '#f0b90b',
+            border: 'none',
+            borderRadius: '8px',
+            color: loading ? '#848e9c' : '#0a0b0e',
+            fontWeight: 'bold',
+            fontSize: '16px',
+            cursor: loading ? 'default' : 'pointer',
+            opacity: loading ? 0.6 : 1
+          }}
+        >
+          {loading ? '⏳ Creating...' : '🚀 Create Account'}
+        </button>
+      </form>
+
+      <div style={{ marginTop: '16px', display: 'flex', gap: '10px' }}>
+        <button
+          onClick={checkUser}
+          style={{
+            flex: 1,
+            padding: '8px',
+            background: 'rgba(255,255,255,0.04)',
+            border: '1px solid rgba(255,255,255,0.06)',
+            borderRadius: '6px',
+            color: '#848e9c',
+            cursor: 'pointer'
+          }}
+        >
+          👤 Check User
+        </button>
+        <button
+          onClick={() => {
+            localStorage.clear();
+            window.location.reload();
+          }}
+          style={{
+            flex: 1,
+            padding: '8px',
+            background: 'rgba(246,70,93,0.05)',
+            border: '1px solid rgba(246,70,93,0.1)',
+            borderRadius: '6px',
+            color: '#f6465d',
+            cursor: 'pointer'
+          }}
+        >
+          🗑️ Reset
+        </button>
+      </div>
+
+      <div style={{ marginTop: '16px', textAlign: 'center' }}>
+        <span style={{ color: '#848e9c' }}>Already have an account? </span>
+        <a href="/login" style={{ color: '#f0b90b', textDecoration: 'none' }}>Sign In</a>
+      </div>
+    </div>
+  );
+};
+
+export default Register;
