@@ -281,9 +281,10 @@ app.get('/api/admin/stats', async (req, res) => {
 });
 
 // ============================================================
-// CATCH-ALL: Serve React frontend
+// CATCH-ALL: Serve React frontend (FIXED - using app.use)
 // ============================================================
-app.get('*', (req, res) => {
+// This must be the LAST route
+app.use((req, res) => {
     res.sendFile(path.join(__dirname, 'frontend/dist/index.html'));
 });
 
