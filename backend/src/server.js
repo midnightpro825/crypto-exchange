@@ -177,6 +177,55 @@ app.post('/api/auth/login', async (req, res) => {
 // ============================================================
 // CATCH-ALL: Serve React frontend
 // ============================================================
+
+// ============================================================
+// DEPOSIT ENDPOINT - FIXED
+// ============================================================
+app.post('/api/balance/deposit', async (req, res) => {
+    console.log('📥 Deposit request received:', req.body);
+    try {
+        const { userId, asset, amount, address, txHash } = req.body;
+        
+        // Validate required fields
+        if (!userId || !asset || !amount) {
+            return res.status(400).json({ 
+                success: false, 
+                message: 'Missing required fields: userId, asset, amount' 
+            });
+        }
+        
+        // Check if user exists
+        const userCheck = await pool.query('SELECT id FROM users WHERE id = $1', [userId]);
+        if (userCheck.rows.length === 0) {
+            return res.status(404).json({ 
+                success: false, 
+                message: 'User not found' 
+            });
+        }
+        
+        // Create deposit record
+        const result = await pool.query(
+            `INSERT INTO deposits (user_id, asset, amount, address, tx_hash, status, created_at)
+             VALUES ($1, $2, $3, $4, $5, 'pending', CURRENT_TIMESTAMP)
+             RETURNING *`,
+            [userId, asset, amount, address || null, txHash || null]
+        );
+        
+        console.log(`✅ Deposit request created: ${amount} ${asset} for user ${userId}`);
+        
+        res.json({
+            success: true,
+            message: 'Deposit request submitted successfully!',
+            deposit: result.rows[0]
+        });
+    } catch (error) {
+        console.error('❌ Deposit error:', error);
+        res.status(500).json({ 
+            success: false, 
+            message: 'Deposit request failed: ' + error.message 
+        });
+    }
+});
 app.use((req, res) => {
     const indexPath = path.join(frontendPath, 'index.html');
     console.log('📄 Looking for index.html at:', indexPath);
@@ -208,4 +257,5 @@ app.listen(PORT, '0.0.0.0', () => {
     console.log(`🚀 Server running on port ${PORT}`);
     console.log(`📁 Serving frontend from: ${frontendPath}`);
 });
+
 
