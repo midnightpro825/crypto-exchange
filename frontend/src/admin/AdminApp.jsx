@@ -11,6 +11,10 @@ import Markets from './pages/Markets';
 import AdminSettings from './pages/Settings';
 
 const AdminApp = () => {
+  console.log('🔄 AdminApp component rendering...');
+  console.log('📍 Current path:', window.location.pathname);
+  console.log('🔑 Token:', localStorage.getItem('token') ? '✅ Present' : '❌ Missing');
+  console.log('👤 User:', JSON.parse(localStorage.getItem('user') || '{}'));
   const [activePage, setActivePage] = useState('admin-dashboard');
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -106,3 +110,4 @@ const AdminApp = () => {
 };
 
 export default AdminApp;
+
