@@ -1,7 +1,7 @@
-// autoTrader.js - Automatically places trades to generate candles
+﻿// autoTrader.js - Automatically places trades to generate candles
 const WebSocket = require('ws');
 
-const ws = new WebSocket('ws://localhost:8080');
+const ws = new WebSocket('wss://crypto-exchange-1-e6rq.onrender.com');
 
 ws.on('open', function open() {
   console.log('✅ Connected to server! Generating trades...');
