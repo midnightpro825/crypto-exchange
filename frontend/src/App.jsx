@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+﻿import React, { useState, useEffect, useContext } from 'react';
 import './App.css';
 import './theme.css';
 import Header from './components/Layout/Header';
@@ -13,6 +13,7 @@ import Account from './components/Account';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import LandingPage from './pages/LandingPage';
+import AdminApp from './admin/AdminApp'; // <-- ADD THIS
 import { ThemeProvider } from './context/ThemeContext';
 import { AuthProvider, AuthContext } from './context/AuthContext';
 
@@ -20,14 +21,14 @@ const AppContent = () => {
   const [activePage, setActivePage] = useState('dashboard');
   const [isLoading, setIsLoading] = useState(true);
   const { setIsLoggedIn, setUser, setBalance } = useContext(AuthContext);
-  
+
   const path = window.location.pathname;
   console.log('📍 Current path:', path);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     const savedUser = localStorage.getItem('user');
-    
+
     if (savedUser && token) {
       try {
         const parsedUser = JSON.parse(savedUser);
@@ -42,6 +43,28 @@ const AppContent = () => {
     setIsLoading(false);
   }, []);
 
+  // Check if the user is on the admin path
+  if (path.startsWith('/admin')) {
+    // If user is not logged in, redirect to admin login
+    const token = localStorage.getItem('token');
+    const userData = JSON.parse(localStorage.getItem('user') || '{}');
+    
+    // If on admin-login.html, show the login page
+    if (path === '/admin-login.html' || path === '/admin-login') {
+      return <Login />;
+    }
+    
+    // If on admin.html or /admin, check authentication
+    if (path === '/admin.html' || path === '/admin' || path === '/admin/') {
+      if (token && userData.role === 'admin') {
+        return <AdminApp />;
+      } else {
+        window.location.href = '/admin-login.html';
+        return null;
+      }
+    }
+  }
+
   // Show login/register pages
   if (path === '/login' || path === '/login/') {
     return <Login />;
@@ -49,7 +72,7 @@ const AppContent = () => {
   if (path === '/register' || path === '/register/') {
     return <Register />;
   }
-  
+
   // Show landing page for root path
   if (path === '/' || path === '/index.html' || path === '') {
     return <LandingPage />;
