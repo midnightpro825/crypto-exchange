@@ -1,135 +1,58 @@
-﻿import React, { useState, useEffect, useContext } from 'react';
-import './App.css';
-import './theme.css';
-import Header from './components/Layout/Header';
-import BottomNav from './components/Layout/BottomNav';
-import Dashboard from './components/Dashboard';
-import Markets from './components/Markets';
-import Trade from './components/Trade';
-import Contracts from './components/Contracts';
-import Assets from './components/Assets';
-import Settings from './components/Settings';
-import Account from './components/Account';
-import Register from './pages/Register';
-import Login from './pages/Login';
-import LandingPage from './pages/LandingPage';
-import AdminApp from './admin/AdminApp';
-import { ThemeProvider } from './context/ThemeContext';
-import { AuthProvider, AuthContext } from './context/AuthContext';
+﻿import React, { useState, useEffect } from 'react';
 
-const AppContent = () => {
-  const [activePage, setActivePage] = useState('dashboard');
-  const [isLoading, setIsLoading] = useState(true);
-  const { setIsLoggedIn, setUser, setBalance } = useContext(AuthContext);
+console.log('🚀 DEBUG: App.jsx loaded');
 
-  const path = window.location.pathname;
-  console.log('📍 Current path:', path);
+function App() {
+  console.log('🔄 DEBUG: App component rendering');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    try {
-      const token = localStorage.getItem('token');
-      const savedUser = localStorage.getItem('user');
-
-      if (savedUser && token) {
-        try {
-          const parsedUser = JSON.parse(savedUser);
-          console.log('✅ User found:', parsedUser.name);
-          setUser(parsedUser);
-          setIsLoggedIn(true);
-        } catch (error) {
-          console.error('Error parsing user:', error);
-          localStorage.clear();
-        }
-      }
-    } catch (error) {
-      console.error('Error in useEffect:', error);
-    }
-    setIsLoading(false);
+    console.log('✅ DEBUG: App mounted');
+    setLoading(false);
+    console.log('📍 Current path:', window.location.pathname);
   }, []);
 
-  // ============================================================
-  // ADMIN ROUTE
-  // ============================================================
-  if (path === '/admin' || path === '/admin/') {
-    try {
-      const token = localStorage.getItem('token');
-      const userData = JSON.parse(localStorage.getItem('user') || '{}');
-      
-      console.log('🔍 Admin route check:', { token: !!token, role: userData.role });
-      
-      if (token && userData.role === 'admin') {
-        console.log('✅ Rendering AdminApp');
-        return <AdminApp />;
-      } else {
-        window.location.href = '/admin-login.html';
-        return null;
-      }
-    } catch (error) {
-      console.error('Admin route error:', error);
-      window.location.href = '/admin-login.html';
-      return null;
-    }
-  }
-
-  // Show login/register pages
-  if (path === '/login' || path === '/login/') {
-    return <Login />;
-  }
-  if (path === '/register' || path === '/register/') {
-    return <Register />;
-  }
-
-  // Show landing page for root path
-  if (path === '/' || path === '/index.html' || path === '') {
-    return <LandingPage />;
-  }
-
-  if (isLoading) {
+  if (loading) {
+    console.log('⏳ DEBUG: Showing loading...');
     return (
-      <div className="loading-screen">
-        <div className="loading-spinner">🚀</div>
-        <p style={{ color: '#848e9c' }}>TradeFlow Loading...</p>
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
+        background: '#0a0b0e',
+        color: '#e8eaed',
+        fontSize: '24px'
+      }}>
+        Loading TradeFlow...
       </div>
     );
   }
 
-  const renderPage = () => {
-    try {
-      switch(activePage) {
-        case 'dashboard': return <Dashboard setActivePage={setActivePage} />;
-        case 'markets': return <Markets setActivePage={setActivePage} />;
-        case 'trade': return <Trade />;
-        case 'contracts': return <Contracts />;
-        case 'assets': return <Assets />;
-        case 'settings': return <Settings />;
-        case 'account': return <Account />;
-        default: return <Dashboard setActivePage={setActivePage} />;
-      }
-    } catch (error) {
-      console.error('Error rendering page:', error);
-      return <div style={{ color: 'white', padding: '20px' }}>Error loading page</div>;
-    }
-  };
-
+  console.log('🎨 DEBUG: Rendering main content');
   return (
-    <div className="app">
-      <Header activePage={activePage} setActivePage={setActivePage} />
-      <div className="app-body">
-        <main className="main-content">{renderPage()}</main>
+    <div style={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      minHeight: '100vh',
+      background: '#0a0b0e',
+      color: '#e8eaed',
+      flexDirection: 'column',
+      fontFamily: 'Inter, sans-serif',
+      padding: '20px'
+    }}>
+      <h1 style={{ fontSize: '64px' }}>🚀 TradeFlow</h1>
+      <p style={{ fontSize: '20px', color: '#848e9c' }}>Server is running!</p>
+      <p style={{ fontSize: '14px', color: '#4ade80' }}>✅ React is working!</p>
+      <div style={{ marginTop: '30px', display: 'flex', gap: '12px' }}>
+        <a href="/login" style={{ padding: '12px 32px', background: '#4a9eff', color: '#fff', textDecoration: 'none', borderRadius: '8px' }}>Login</a>
+        <a href="/register" style={{ padding: '12px 32px', background: 'rgba(255,255,255,0.04)', color: '#fff', textDecoration: 'none', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.06)' }}>Register</a>
+        <a href="/admin-login.html" style={{ padding: '12px 32px', background: '#f0b90b', color: '#0a0b0e', textDecoration: 'none', borderRadius: '8px' }}>Admin</a>
       </div>
-      <BottomNav activePage={activePage} setActivePage={setActivePage} />
     </div>
-  );
-};
-
-function App() {
-  return (
-    <AuthProvider>
-      <ThemeProvider>
-        <AppContent />
-      </ThemeProvider>
-    </AuthProvider>
   );
 }
 
+console.log('✅ DEBUG: App component defined');
 export default App;
