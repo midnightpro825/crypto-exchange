@@ -5,6 +5,7 @@ const dotenv = require('dotenv');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { Pool } = require('pg');
+const fs = require('fs');
 
 dotenv.config();
 
@@ -67,29 +68,19 @@ async function createTables() {
 // ============================================================
 // SERVE FRONTEND - FIXED PATH
 // ============================================================
-// Try multiple possible paths for the frontend build
-const possiblePaths = [
-    path.join(__dirname, '../../frontend/dist'),
-    path.join(__dirname, '../frontend/dist'),
-    path.join(__dirname, 'frontend/dist'),
-    path.join(process.cwd(), 'frontend/dist')
-];
+const frontendPath = path.join(__dirname, '../frontend/dist');
+console.log('📁 Frontend path:', frontendPath);
 
-let frontendPath = null;
-for (const p of possiblePaths) {
-    if (require('fs').existsSync(p)) {
-        frontendPath = p;
-        break;
-    }
+// Check if frontend exists
+if (fs.existsSync(frontendPath)) {
+    console.log('✅ Frontend dist folder found!');
+    const files = fs.readdirSync(frontendPath);
+    console.log('📄 Files:', files.slice(0, 5));
+} else {
+    console.log('❌ Frontend dist folder NOT found at:', frontendPath);
 }
 
-if (!frontendPath) {
-    console.error('❌ Could not find frontend dist folder!');
-    console.log('📁 Tried paths:', possiblePaths);
-    frontendPath = path.join(__dirname, '../../frontend/dist');
-}
-
-console.log('📁 Serving frontend from:', frontendPath);
+// Serve static files
 app.use(express.static(frontendPath));
 
 // ============================================================
@@ -191,16 +182,20 @@ app.post('/api/auth/login', async (req, res) => {
 // CATCH-ALL: Serve React frontend
 // ============================================================
 app.use((req, res) => {
-    try {
-        const indexPath = path.join(frontendPath, 'index.html');
-        if (require('fs').existsSync(indexPath)) {
-            res.sendFile(indexPath);
-        } else {
-            res.status(404).send('Frontend not found. Please check the deployment.');
-        }
-    } catch (error) {
-        console.error('❌ Error serving frontend:', error);
-        res.status(500).send('Server error: ' + error.message);
+    const indexPath = path.join(frontendPath, 'index.html');
+    if (fs.existsSync(indexPath)) {
+        res.sendFile(indexPath);
+    } else {
+        res.status(404).send(`
+            <html>
+                <head><title>TradeFlow</title></head>
+                <body style="background:#0a0b0e;color:#e8eaed;font-family:sans-serif;display:flex;justify-content:center;align-items:center;height:100vh;flex-direction:column;">
+                    <h1>🚀 TradeFlow</h1>
+                    <p>Server is running!</p>
+                    <p style="color:#848e9c;">Frontend files not found at: ${frontendPath}</p>
+                </body>
+            </html>
+        `);
     }
 });
 
@@ -210,5 +205,5 @@ app.use((req, res) => {
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`🚀 Server running on port ${PORT}`);
-    console.log(`📁 Frontend path: ${frontendPath}`);
+    console.log(`📁 Serving frontend from: ${frontendPath}`);
 });
