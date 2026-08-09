@@ -66,9 +66,14 @@ async function createTables() {
 }
 
 // ============================================================
-// SERVE FRONTEND - FIXED PATH
+// SERVE FRONTEND - CORRECT PATH: Go up TWO levels from backend/src
 // ============================================================
-const frontendPath = path.join(__dirname, '../frontend/dist');
+// __dirname = /opt/render/project/src/backend/src
+// Go up two levels: /opt/render/project/src
+const projectRoot = path.resolve(__dirname, '../..');
+const frontendPath = path.join(projectRoot, 'frontend/dist');
+
+console.log('📁 Project root:', projectRoot);
 console.log('📁 Frontend path:', frontendPath);
 
 // Check if frontend exists
@@ -78,6 +83,14 @@ if (fs.existsSync(frontendPath)) {
     console.log('📄 Files:', files.slice(0, 5));
 } else {
     console.log('❌ Frontend dist folder NOT found at:', frontendPath);
+    console.log('📁 Trying alternative path...');
+    // Try an alternative path
+    const altPath = path.join(process.cwd(), 'frontend/dist');
+    console.log('📁 Alternative path:', altPath);
+    if (fs.existsSync(altPath)) {
+        console.log('✅ Found frontend at alternative path!');
+        frontendPath = altPath;
+    }
 }
 
 // Serve static files
@@ -192,7 +205,8 @@ app.use((req, res) => {
                 <body style="background:#0a0b0e;color:#e8eaed;font-family:sans-serif;display:flex;justify-content:center;align-items:center;height:100vh;flex-direction:column;">
                     <h1>🚀 TradeFlow</h1>
                     <p>Server is running!</p>
-                    <p style="color:#848e9c;">Frontend files not found at: ${frontendPath}</p>
+                    <p style="color:#848e9c;">Looking for: ${frontendPath}</p>
+                    <p style="color:#848e9c;">index.html: ${indexPath}</p>
                 </body>
             </html>
         `);
