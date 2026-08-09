@@ -17,67 +17,6 @@ import AdminApp from './admin/AdminApp';
 import { ThemeProvider } from './context/ThemeContext';
 import { AuthProvider, AuthContext } from './context/AuthContext';
 
-// Error Boundary Component
-class ErrorBoundary extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { hasError: false, error: null, errorInfo: null };
-  }
-
-  static getDerivedStateFromError(error) {
-    return { hasError: true, error: error };
-  }
-
-  componentDidCatch(error, errorInfo) {
-    console.error('❌ Error Boundary caught an error:', error);
-    console.error('Error details:', errorInfo);
-    this.setState({ errorInfo: errorInfo });
-  }
-
-  render() {
-    if (this.state.hasError) {
-      return (
-        <div style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: '100vh',
-          flexDirection: 'column',
-          gap: '16px',
-          padding: '20px',
-          background: '#0a0b0e',
-          color: '#f87171'
-        }}>
-          <div style={{ fontSize: '48px' }}>💥</div>
-          <h2>Something went wrong loading the admin panel</h2>
-          <p style={{ color: '#848e9c', maxWidth: '600px', textAlign: 'center' }}>
-            {this.state.error?.message || 'Unknown error'}
-          </p>
-          <button
-            onClick={() => {
-              localStorage.removeItem('token');
-              localStorage.removeItem('user');
-              window.location.href = '/admin-login.html';
-            }}
-            style={{
-              padding: '10px 24px',
-              background: '#4a9eff',
-              border: 'none',
-              borderRadius: '8px',
-              color: '#fff',
-              cursor: 'pointer',
-              fontWeight: '600'
-            }}
-          >
-            Go to Admin Login
-          </button>
-        </div>
-      );
-    }
-    return this.props.children;
-  }
-}
-
 const AppContent = () => {
   const [activePage, setActivePage] = useState('dashboard');
   const [isLoading, setIsLoading] = useState(true);
@@ -104,34 +43,19 @@ const AppContent = () => {
     setIsLoading(false);
   }, []);
 
-  // ============================================================
-  // ADMIN ROUTE HANDLING - THIS MUST BE FIRST
-  // ============================================================
+  // Check if user is on admin path
   if (path === '/admin' || path === '/admin/' || path.startsWith('/admin/')) {
     if (path === '/admin-login.html' || path === '/admin-login') {
-      window.location.href = '/admin-login.html';
+      // Let the standalone HTML handle it
       return null;
     }
     
     const token = localStorage.getItem('token');
     const userData = JSON.parse(localStorage.getItem('user') || '{}');
     
-    console.log('🔍 Admin route check:', {
-      path,
-      token: !!token,
-      role: userData.role,
-      isAdmin: token && userData.role === 'admin'
-    });
-    
     if (token && userData.role === 'admin') {
-      console.log('✅ Admin authorized - rendering AdminApp with ErrorBoundary');
-      return (
-        <ErrorBoundary>
-          <AdminApp />
-        </ErrorBoundary>
-      );
+      return <AdminApp />;
     } else {
-      console.log('❌ Not authorized - redirecting to admin-login.html');
       window.location.href = '/admin-login.html';
       return null;
     }
