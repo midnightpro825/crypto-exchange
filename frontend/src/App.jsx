@@ -26,36 +26,46 @@ const AppContent = () => {
   console.log('📍 Current path:', path);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    const savedUser = localStorage.getItem('user');
+    try {
+      const token = localStorage.getItem('token');
+      const savedUser = localStorage.getItem('user');
 
-    if (savedUser && token) {
-      try {
-        const parsedUser = JSON.parse(savedUser);
-        console.log('✅ User found:', parsedUser.name);
-        setUser(parsedUser);
-        setIsLoggedIn(true);
-      } catch (error) {
-        console.error('Error parsing user:', error);
-        localStorage.clear();
+      if (savedUser && token) {
+        try {
+          const parsedUser = JSON.parse(savedUser);
+          console.log('✅ User found:', parsedUser.name);
+          setUser(parsedUser);
+          setIsLoggedIn(true);
+        } catch (error) {
+          console.error('Error parsing user:', error);
+          localStorage.clear();
+        }
       }
+    } catch (error) {
+      console.error('Error in useEffect:', error);
     }
     setIsLoading(false);
   }, []);
 
-  // Check if user is on admin path
-  if (path === '/admin' || path === '/admin/' || path.startsWith('/admin/')) {
-    if (path === '/admin-login.html' || path === '/admin-login') {
-      // Let the standalone HTML handle it
-      return null;
-    }
-    
-    const token = localStorage.getItem('token');
-    const userData = JSON.parse(localStorage.getItem('user') || '{}');
-    
-    if (token && userData.role === 'admin') {
-      return <AdminApp />;
-    } else {
+  // ============================================================
+  // ADMIN ROUTE
+  // ============================================================
+  if (path === '/admin' || path === '/admin/') {
+    try {
+      const token = localStorage.getItem('token');
+      const userData = JSON.parse(localStorage.getItem('user') || '{}');
+      
+      console.log('🔍 Admin route check:', { token: !!token, role: userData.role });
+      
+      if (token && userData.role === 'admin') {
+        console.log('✅ Rendering AdminApp');
+        return <AdminApp />;
+      } else {
+        window.location.href = '/admin-login.html';
+        return null;
+      }
+    } catch (error) {
+      console.error('Admin route error:', error);
       window.location.href = '/admin-login.html';
       return null;
     }
@@ -84,15 +94,20 @@ const AppContent = () => {
   }
 
   const renderPage = () => {
-    switch(activePage) {
-      case 'dashboard': return <Dashboard setActivePage={setActivePage} />;
-      case 'markets': return <Markets setActivePage={setActivePage} />;
-      case 'trade': return <Trade />;
-      case 'contracts': return <Contracts />;
-      case 'assets': return <Assets />;
-      case 'settings': return <Settings />;
-      case 'account': return <Account />;
-      default: return <Dashboard setActivePage={setActivePage} />;
+    try {
+      switch(activePage) {
+        case 'dashboard': return <Dashboard setActivePage={setActivePage} />;
+        case 'markets': return <Markets setActivePage={setActivePage} />;
+        case 'trade': return <Trade />;
+        case 'contracts': return <Contracts />;
+        case 'assets': return <Assets />;
+        case 'settings': return <Settings />;
+        case 'account': return <Account />;
+        default: return <Dashboard setActivePage={setActivePage} />;
+      }
+    } catch (error) {
+      console.error('Error rendering page:', error);
+      return <div style={{ color: 'white', padding: '20px' }}>Error loading page: {error.message}</div>;
     }
   };
 
