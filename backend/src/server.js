@@ -59,41 +59,24 @@ async function createTables() {
             )
         `);
         console.log('✅ Users table ready');
-        console.log('✅ All tables ready!');
     } catch (error) {
         console.error('❌ Error creating tables:', error.message);
     }
 }
 
 // ============================================================
-// SERVE FRONTEND - CORRECT PATH: Go up TWO levels from backend/src
+// SERVE FRONTEND
 // ============================================================
-// __dirname = /opt/render/project/src/backend/src
-// Go up two levels: /opt/render/project/src
-const projectRoot = path.resolve(__dirname, '../..');
-const frontendPath = path.join(projectRoot, 'frontend/dist');
-
-console.log('📁 Project root:', projectRoot);
+const frontendPath = path.join(__dirname, '../../frontend/dist');
 console.log('📁 Frontend path:', frontendPath);
 
-// Check if frontend exists
 if (fs.existsSync(frontendPath)) {
     console.log('✅ Frontend dist folder found!');
-    const files = fs.readdirSync(frontendPath);
-    console.log('📄 Files:', files.slice(0, 5));
 } else {
-    console.log('❌ Frontend dist folder NOT found at:', frontendPath);
-    console.log('📁 Trying alternative path...');
-    // Try an alternative path
-    const altPath = path.join(process.cwd(), 'frontend/dist');
-    console.log('📁 Alternative path:', altPath);
-    if (fs.existsSync(altPath)) {
-        console.log('✅ Found frontend at alternative path!');
-        frontendPath = altPath;
-    }
+    console.log('❌ Frontend dist folder NOT found!');
 }
 
-// Serve static files
+// Serve static files - THIS MUST COME BEFORE API ROUTES
 app.use(express.static(frontendPath));
 
 // ============================================================
@@ -196,17 +179,21 @@ app.post('/api/auth/login', async (req, res) => {
 // ============================================================
 app.use((req, res) => {
     const indexPath = path.join(frontendPath, 'index.html');
+    console.log('📄 Looking for index.html at:', indexPath);
+    
     if (fs.existsSync(indexPath)) {
+        console.log('✅ Serving index.html');
         res.sendFile(indexPath);
     } else {
+        console.log('❌ index.html NOT FOUND!');
         res.status(404).send(`
             <html>
                 <head><title>TradeFlow</title></head>
                 <body style="background:#0a0b0e;color:#e8eaed;font-family:sans-serif;display:flex;justify-content:center;align-items:center;height:100vh;flex-direction:column;">
                     <h1>🚀 TradeFlow</h1>
                     <p>Server is running!</p>
-                    <p style="color:#848e9c;">Looking for: ${frontendPath}</p>
-                    <p style="color:#848e9c;">index.html: ${indexPath}</p>
+                    <p style="color:#848e9c;">Frontend path: ${frontendPath}</p>
+                    <p style="color:#848e9c;">index.html exists: ${fs.existsSync(indexPath)}</p>
                 </body>
             </html>
         `);
